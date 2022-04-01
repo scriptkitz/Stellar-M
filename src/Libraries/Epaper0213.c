@@ -739,7 +739,6 @@ struct TH_Value th_value_old = { 0 };
 #define VBAT_MIN    220
 #define VBAT_MAX    300
 #define TEST_MAX    60   //最大测试稳定值
-uint16_t re_count =0;
 void epd_distest(uint16_t part)
 {
     static uint8_t part_count = 0;
@@ -782,7 +781,6 @@ void epd_distest(uint16_t part)
 
     EPD_2IN13_Init(part_count);
     part_count++;
-    re_count++;
     EPD_ClearRAM();
     EPD_DrawBattery(210, 0, VBAT_MAX, VBAT_MIN, Vbat);
     EPD_DrawVLine(124, 24, 96, 3);
@@ -791,8 +789,6 @@ void epd_distest(uint16_t part)
     sprintf(String, "%02d", th_value.CEL / 10);
     EPD_DrawFonts(0 + 5, 3, 0, String, &Ascii_DigitalDismay_28x56, NULL);
     sprintf(String, "%02d", th_value.RH / 10);
-    sprintf(String, "%d",re_count);
-    EPD_DrawFonts(20, 0, 0, String, &Ascii_YouYuan_8x16, NULL);
     EPD_DrawFonts(125 + 5, 3, 0, String, &Ascii_DigitalDismay_28x56, NULL);
     EPD_draw(95 + 5, 3, 20, 5, &EPD_FontAscii_RH[1][0]);
     EPD_draw(219 + 5, 3, 20, 5, &EPD_FontAscii_RH[0][0]);
