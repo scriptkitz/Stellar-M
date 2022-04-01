@@ -14,10 +14,10 @@ inline void InitClk(void)
     DCOCTL = CALDCO_1MHZ;
     BCSCTL3 |= LFXT1S_2; /* Mode 2 for LFXT1 : VLO */
     IFG1 &= ~(OFIFG);
-    BCSCTL1 |= DIVA_3;                //辅助系统8分频f=32768/8=4096
-    TACTL = TASSEL_1 + MC_1;       // AMCLK，upmode
+    BCSCTL1 |= DIVA_3;               //辅助系统8分频f=32768/8=4096
+    TACTL = TASSEL_1 + MC_1;         // AMCLK，upmode
     CCTL0 = CCIE;                    //CCR0 interrupt enabled
-    CCR0 = 4096 * 5;
+    CCR0 = 4096 * 5;                 //本来是*10实测是24秒改5差不多
 }
 
 int main(void)
@@ -30,6 +30,7 @@ int main(void)
     RF_OFF;
     InitClk();
     flash_init();
+    //休眠flash 降低15uA
     flash_sleep();
     flash_deinit();
     P2DIR &= ~BIT0;
@@ -62,14 +63,5 @@ __interrupt void Timer_A(void)
     TACTL |= TACLR;                    //计数器清零
     LPM3_EXIT;
 }
-//#pragma vector = PORT2_VECTOR
-//__interrupt void Port2_ISR(void)    //Port1_ISR(void)   中断服务函数
-//{
-//    if (P2IFG & BIT0)   //判断是否P2.0产生中断
-//    {
-//
-//        P2IFG &= ~ BIT0;   //清除标志位
-//        LPM4_EXIT;
-//    }
-//}
+
 

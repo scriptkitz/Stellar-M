@@ -182,6 +182,7 @@ void EPD_2IN13_ReadBusy(void)
     while (EPD_BUSY)
     {      //LOW: idle, HIGH: busy
         delay_ms(10);
+        //在刷新的时候测试电压比较准确
         vbat = ADC_getVbat();
         if (vbat < Vbat)
         {
@@ -321,7 +322,7 @@ void EPD_2IN13_Fill(uint8 color)
 
     EPD_2IN13urnOnDisplay();
 }
-
+//画图函数
 void EPD_draw(uint16 x, uint8 y_x8, uint16 x_size, uint8 y_size_x8, const uint8 *dat)
 {
     uint16 data_size = x_size * y_size_x8;
@@ -366,6 +367,7 @@ void EPD_2IN13_Display(const uint8 *Image)
     }
     EPD_2IN13urnOnDisplay();
 }
+//初始化墨水用的IO
 void EPD_2IN13_GPIO_Init(void)
 {
     EPD_BS_L; //BS：VCC: 3线SPI / GND: 4线SPI
@@ -385,7 +387,7 @@ void EPD_2IN13_GPIO_Init(void)
     P3SEL = 0X0;
     P3SEL2 = 0X0;
 }
-
+//墨水屏初始化 0代表全刷  1局刷
 void EPD_2IN13_Init(uint8_t part)
 {
 
@@ -737,6 +739,7 @@ struct TH_Value th_value_old = { 0 };
 #define VBAT_MIN    220
 #define VBAT_MAX    300
 #define TEST_MAX    60   //最大测试稳定值
+uint16_t re_count =0;
 void epd_distest(uint16_t part)
 {
     static uint8_t part_count = 0;
@@ -779,6 +782,7 @@ void epd_distest(uint16_t part)
 
     EPD_2IN13_Init(part_count);
     part_count++;
+    re_count++;
     EPD_ClearRAM();
     EPD_DrawBattery(210, 0, VBAT_MAX, VBAT_MIN, Vbat);
     EPD_DrawVLine(124, 24, 96, 3);
@@ -787,6 +791,8 @@ void epd_distest(uint16_t part)
     sprintf(String, "%02d", th_value.CEL / 10);
     EPD_DrawFonts(0 + 5, 3, 0, String, &Ascii_DigitalDismay_28x56, NULL);
     sprintf(String, "%02d", th_value.RH / 10);
+    sprintf(String, "%d",re_count);
+    EPD_DrawFonts(20, 0, 0, String, &Ascii_YouYuan_8x16, NULL);
     EPD_DrawFonts(125 + 5, 3, 0, String, &Ascii_DigitalDismay_28x56, NULL);
     EPD_draw(95 + 5, 3, 20, 5, &EPD_FontAscii_RH[1][0]);
     EPD_draw(219 + 5, 3, 20, 5, &EPD_FontAscii_RH[0][0]);

@@ -5,7 +5,6 @@
 #define SHT30_ADDR 0x44
 #define SHT40_ADDR 0x44
 #define AHT20_ADDR 0x38
-//启用SHT30
 
 
 

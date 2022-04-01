@@ -86,8 +86,8 @@ extern struct TH_Value th_value;
 
 void EPD_2IN13_Init(uint8_t part);
 void EPD_2IN13_Denit(void);
-void EPD_DrawHLine(uint16 x, uint8 y, uint16 x_size, uint8 width);//��ˮƽ��
-void EPD_DrawVLine(uint16 x, uint8 y, uint8 y_size, uint16 width);//����ֱ��
+void EPD_DrawHLine(uint16 x, uint8 y, uint16 x_size, uint8 width);
+void EPD_DrawVLine(uint16 x, uint8 y, uint8 y_size, uint16 width);
 void EPD_DrawFonts(uint16 x, uint8 y_x8, uint8 gap, const char* str, const epdFONT_ascii* ascii_font, const epdFONT_utf8* utf8_font);//д��
 void epd_distest(uint16_t part);
 void EPD_2IN13_DeepSleep(void);
