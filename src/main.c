@@ -33,15 +33,6 @@ int main(void)
     flash_sleep();
     flash_deinit();
     P2DIR &= ~BIT0;
-//    P2OUT |= BIT0;
-//    P2REN |= BIT0;
-//    /*打开P2.0口的中断*/
-//    P2IE |= BIT0;
-//    /*设定为下降沿触发*/
-//    P2IES |= BIT0;
-//    /*清除中断标志位*/
-//    P2IFG &= ~BIT0;
-//    _BIS_SR(GIE);// Enable CPU interrupts
     uint16_t ADC10CTL1_R = ADC10CTL1;
     uint16_t ADC10CTL0_R = ADC10CTL0;
     ADC10CTL1 = INCH_11;
@@ -59,11 +50,8 @@ int main(void)
             count = 0;
         }
         count++;
-//        ADC10CTL0 &= ~ENC;
-//        ADC10CTL0 &= ~REFON;
         __bis_SR_register(LPM3_bits | GIE);
-//        ADC10CTL0 |= REFON;
-//        ADC10CTL0 |= ENC;
+
     }
 
 }
