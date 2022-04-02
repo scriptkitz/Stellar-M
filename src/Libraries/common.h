@@ -61,3 +61,6 @@ int sprintf2(char *buf, const char *fmt, ...);
 
 #define  sprintf(_string,format, ...)  sprintf2(_string,format,##__VA_ARGS__)
 #endif // !_COMMON_H_
+
+
+#define PCB_VER   0  //PCB°æ±¾

@@ -1,5 +1,21 @@
 #include "iic.h"
 //=====================================IIC端口定义=================================
+#if PCB_VER
+
+#define  SCLPIN  BIT6
+#define  SDAPIN  BIT7
+
+#define  SCL1       P1OUT|=SCLPIN
+#define  SCL0       P1OUT&= ~SCLPIN
+#define  SCLOUT     P1DIR|=SCLPIN
+#define  SDA1       P1OUT|=SDAPIN               //IIC数据引脚
+#define  SDA0       P1OUT&= ~SDAPIN
+#define  SDAIN      P1DIR&= ~SDAPIN
+#define  SDAOUT     P1DIR|=SDAPIN
+#define  SDADATA    (P1IN&SDAPIN)
+
+#else
+
 #define  SCLPIN  BIT2
 #define  SDAPIN  BIT3
 
@@ -11,9 +27,11 @@
 #define  SDAIN      P3DIR&= ~SDAPIN
 #define  SDAOUT     P3DIR|=SDAPIN
 #define  SDADATA    (P3IN&SDAPIN)
+
+
+#endif
+
 #define  I2C_delay()  delay_us(2)
-
-
 //================================I2C起始信号================================
 void I2C_Start()
 {

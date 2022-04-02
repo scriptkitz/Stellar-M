@@ -370,6 +370,22 @@ void EPD_2IN13_Display(const uint8 *Image)
 //初始化墨水用的IO
 void EPD_2IN13_GPIO_Init(void)
 {
+
+#if PCB_VER
+    EPD_ON;
+    P2DIR &= ~EPD_BUSY_PIN;                             //P2.5设置为输入
+    P2DIR |= EPD_POWER_PIN;
+    P1DIR |= (EPD_SCLK_PIN | EPD_SDI_PIN | EPD_CS_PIN );
+    P3DIR |= EPD_DC_PIN | EPD_RST_PIN ;
+    P1SEL = 0X0;
+    P1SEL2 = 0X0;
+    P2SEL = 0X0;
+    P2SEL2 = 0X0;
+    P3SEL = 0X0;
+    P3SEL2 = 0X0;
+
+
+#else
     EPD_BS_L; //BS：VCC: 3线SPI / GND: 4线SPI
     EPD_ON;
 
@@ -386,59 +402,60 @@ void EPD_2IN13_GPIO_Init(void)
     P2SEL2 = 0X0;
     P3SEL = 0X0;
     P3SEL2 = 0X0;
+#endif
 }
 //墨水屏初始化 0代表全刷  1局刷
 void EPD_2IN13_Init(uint8_t part)
 {
 
     EPD_2IN13_Reset();
-//    if (part == 0)
-//    {
-//        EPD_2IN13_SendCommand(0x12);                             //SWRESET
-//        EPD_2IN13_ReadBusy();
-//    }
+    if (part == 0)
+    {
+        EPD_2IN13_SendCommand(0x12);                             //SWRESET
+        EPD_2IN13_ReadBusy();
+    }
     EPD_2IN13_SendCommand(0x01); // DRIVER_OUTPUT_CONTROL
-    EPD_2IN13_SendData((EPD_2IN13_HEIGHT - 1) & 0xFF);
-    EPD_2IN13_SendData(0x00);
-    EPD_2IN13_SendData(0x00);           // GD = 0; SM = 0; TB = 0;
+       EPD_2IN13_SendData((EPD_2IN13_HEIGHT - 1) & 0xFF);
+       EPD_2IN13_SendData(0x00);
+       EPD_2IN13_SendData(0x00);           // GD = 0; SM = 0; TB = 0;
 
-    EPD_2IN13_SendCommand(0x0C); // BOOSTER_SOFT_START_CONTROL
-    EPD_2IN13_SendData(0xD7);
-    EPD_2IN13_SendData(0xD6);
-    EPD_2IN13_SendData(0x9D);
+       EPD_2IN13_SendCommand(0x0C); // BOOSTER_SOFT_START_CONTROL
+       EPD_2IN13_SendData(0xD7);
+       EPD_2IN13_SendData(0xD6);
+       EPD_2IN13_SendData(0x9D);
 
-    EPD_2IN13_SendCommand(0x2C); // WRITE_VCOM_REGISTER
-    if (part == 0)
-    {
-        EPD_2IN13_SendData(0xA5);     // VCOM 7C
-    }
-    else
-    {
-        EPD_2IN13_SendData(0x25);     // VCOM 7C
-    }
+       EPD_2IN13_SendCommand(0x2C); // WRITE_VCOM_REGISTER
+       if (part == 0)
+       {
+           EPD_2IN13_SendData(0xA5);     // VCOM 7C
+       }
+       else
+       {
+           EPD_2IN13_SendData(0x25);     // VCOM 7C
+       }
 
-    EPD_2IN13_SendCommand(0x3A);   // SET_DUMMY_LINE_PERIOD
-    EPD_2IN13_SendData(0x06);           // 4 dummy lines per gate
+       EPD_2IN13_SendCommand(0x3A);   // SET_DUMMY_LINE_PERIOD
+       EPD_2IN13_SendData(0x06);           // 4 dummy lines per gate
 
-    EPD_2IN13_SendCommand(0x3B);   // SET_GATEIME
-    EPD_2IN13_SendData(0x0B);           // 2us per line
+       EPD_2IN13_SendCommand(0x3B);   // SET_GATEIME
+       EPD_2IN13_SendData(0x0B);           // 2us per line
 
-    EPD_2IN13_SendCommand(0x3C); // BORDER_WAVEFORM_CONTROL
-    EPD_2IN13_SendData(0x33);
+       EPD_2IN13_SendCommand(0x3C); // BORDER_WAVEFORM_CONTROL
+       EPD_2IN13_SendData(0x33);
 
-    EPD_2IN13_SendCommand(0x11); // DATA_ENTRY_MODE_SETTING
-    EPD_2IN13_SendData(0x01);           // X increment; Y increment
+       EPD_2IN13_SendCommand(0x11); // DATA_ENTRY_MODE_SETTING
+       EPD_2IN13_SendData(0x01);           // X increment; Y increment
 
-    EPD_2IN13_SendCommand(0x32);
+       EPD_2IN13_SendCommand(0x32);
 
-    if (part == 0)
-    {
-        SetLut(&hs_lut[0]);
-    }
-    else
-    {
-        SetLut(&EPD_2IN13_lut_partial_update[0]);
-    }
+       if (part == 0)
+       {
+           SetLut(&hs_lut[0]);
+       }
+       else
+       {
+           SetLut(&EPD_2IN13_lut_partial_update[0]);
+       }
 }
 void EPD_2IN13_Denit(void)
 {

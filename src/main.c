@@ -24,16 +24,19 @@ int main(void)
 {
 
     WDTCTL = WDTPW + WDTHOLD;
+    InitClk();
     EPD_2IN13_GPIO_Init();
+
+#if !PCB_VER
     RF_OUT
     ;
     RF_OFF;
-    InitClk();
+
     flash_init();
     //休眠flash 降低15uA
     flash_sleep();
     flash_deinit();
-    P2DIR &= ~BIT0;
+#endif
     uint16_t ADC10CTL1_R = ADC10CTL1;
     uint16_t ADC10CTL0_R = ADC10CTL0;
     ADC10CTL1 = INCH_11;

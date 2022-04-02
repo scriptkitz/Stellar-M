@@ -16,7 +16,52 @@
 //BS - P3.1                         //总线切换
 //nc - P3.7                         //微雪说悬空就行 价签上接了mcu
 //P2.6 = H power off；L = power on   //供电控制
+#if PCB_VER
 
+#define EPD_SCLK_PIN      BIT4
+#define EPD_SDI_PIN       BIT2
+#define EPD_CS_PIN        BIT5
+#define EPD_DC_PIN        BIT1
+#define EPD_RST_PIN       BIT0
+#define EPD_BUSY_PIN      BIT0
+#define EPD_POWER_PIN     BIT2
+#define LIGHT_POWER_PIN     BIT2
+#define GL_POWER_PIN      BIT3
+
+#define GL_POWER_ON         P3OUT |= GL_POWER_PIN
+#define GL_POWER_OFF         P3OUT &= ~GL_POWER_PIN
+
+#define LIGHT_POWER_ON         P3OUT &= ~LIGHT_POWER_PIN
+#define LIGHT_POWER_OFF         P3OUT |= LIGHT_POWER_PIN
+
+#define EPD_SCLK_L         P1OUT &= ~EPD_SCLK_PIN
+#define EPD_SCLK_H         P1OUT |= EPD_SCLK_PIN
+
+#define EPD_SDI_L          P1OUT &= ~EPD_SDI_PIN
+#define EPD_SDI_H          P1OUT |= EPD_SDI_PIN
+
+#define EPD_CS_L           P1OUT &= ~EPD_CS_PIN
+#define EPD_CS_H           P1OUT |= EPD_CS_PIN
+
+#define EPD_DC_L           P3OUT &= ~EPD_DC_PIN
+#define EPD_DC_H           P3OUT |= EPD_DC_PIN
+
+#define EPD_RST_L          P3OUT &= ~EPD_RST_PIN
+#define EPD_RST_H          P3OUT |= EPD_RST_PIN
+
+#define EPD_BUSY            P2IN & EPD_BUSY_PIN
+#define EPD_BUSY_OUT        P2DIR  |= EPD_BUSY_PIN
+#define EPD_BUSY_H          P2OUT |= EPD_BUSY_PIN
+
+#define EPD_BS_L
+#define GL_ADC_PIN         BIT3
+#define EPD_NC_H
+#define EPD_NC_L
+#define EPD_ON              P2OUT &= ~EPD_POWER_PIN
+#define EPD_OFF             P2OUT |= EPD_POWER_PIN
+
+
+#else
 #define EPD_SCLK_L         P2OUT &= ~BIT3
 #define EPD_SCLK_H         P2OUT |= BIT3
 
@@ -42,6 +87,9 @@
 #define EPD_NC_L           P3OUT &= ~BIT7
 #define EPD_ON             P2OUT &= ~BIT6
 #define EPD_OFF            P2OUT |= BIT6
+
+#endif
+
 
 #define EPD_2IN13_WIDTH       122
 #define EPD_2IN13_HEIGHT      250
