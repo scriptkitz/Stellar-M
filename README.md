@@ -16,7 +16,7 @@
 功能说明
 价签原板飞线接温湿度模块。AHT20和SHT30都支持，上电自动检测。定时10秒查询温湿度。温度差0.5或者湿度差1就刷新，6000秒后强制刷新，局刷30次全刷一次。SDA接价签原板的data，SCL接SCK
 
-
+详细看我立创开源 [2.1价签无损改温湿度计](https://oshwhub.com/article/2.1jia-qian-wu-sun-gai-wen-shi-du-ji)
 #### 参与贡献
 
 1.  Fork 本仓库
